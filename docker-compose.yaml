@@ -1,0 +1,28 @@
+version : "3"
+
+services:
+  mysql-stand:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: emp
+    ports:
+      - "3301:3306"
+  
+  springboot-docker-container:
+    image: springboot-docker
+    restart: always
+    ports:
+      - "8092:8091"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-stand:3306/emp"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "root"
+      
+    build:
+      context: "./"
+      dockerfile: "Dockerfile"
+    depends_on:
+      - mysql-stand
